@@ -2,26 +2,13 @@
 
 [![Build Status](https://travis-ci.org/amphp/aerys.svg?branch=master)](https://travis-ci.org/amphp/aerys)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/amphp/aerys/blob/master/LICENSE)
-[![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/amphp/aerys.svg)](http://isitmaintained.com/project/amphp/aerys "Average time to resolve an issue")
 
-Aerys is a non-blocking HTTP/1.1 and HTTP/2 application, WebSocket and static file server written in PHP based on the [`amp`](https://github.com/amphp/amp) concurrency framework.
+Aerys is a non-blocking HTTP/1.1 and HTTP/2 application, WebSocket and static file server written in PHP based on [Amp](https://github.com/amphp/amp).
 
-Aerys has currently a few 0.x tags. APIs are still subject to very small changes and you may run into rogue ~~bugs~~ features. We love PRs, though :-)
+## Deprecation
 
-## Selected Built-in Features ...
-
-- Static file serving
-- WebSockets
-- Dynamic app endpoint routing
-- Name-based virtual hosting
-- Full TLS support
-- Customizable GZIP output compression
-- HTTP/2.0 support
-- Middleware hooks
-
-## Requirements
-
-- PHP 7
+This repository is deprecated in favor of [`amphp/http-server`](https://github.com/amphp/http-server).
+It still exists to keep the documentation and also Packagist working as before.
 
 ## Installation
 
@@ -72,7 +59,7 @@ return (new Aerys\Host)
 
 ## Security
 
-If you discover any security related issues, please email bobwei9@hotmail.com or me@kelunik.com instead of using the issue tracker.
+If you discover any security related issues, please email `bobwei9@hotmail.com` or `me@kelunik.com` instead of using the issue tracker.
 
 ## License
 
