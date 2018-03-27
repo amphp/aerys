@@ -76,8 +76,6 @@ abstract class Process {
         } catch (\Throwable $uncaught) {
             $this->exitCode = 1;
             $this->logger->critical($uncaught);
-        } finally {
-            static::exit();
         }
     }
 
@@ -101,37 +99,41 @@ abstract class Process {
 
     private function registerShutdownHandler() {
         register_shutdown_function(function () {
-            if (!$err = \error_get_last()) {
-                return;
-            }
-
-            switch ($err["type"]) {
-                case E_ERROR:
-                case E_PARSE:
-                case E_USER_ERROR:
-                case E_CORE_ERROR:
-                case E_CORE_WARNING:
-                case E_COMPILE_ERROR:
-                case E_COMPILE_WARNING:
-                case E_RECOVERABLE_ERROR:
-                    break;
-                default:
-                    return;
-            }
-
-            $this->exitCode = 1;
-            $msg = "{$err["message"]} in {$err["file"]} on line {$err["line"]}";
-
-            $previous = Loop::get();
-
             try {
-                Loop::set((new Loop\DriverFactory)->create());
-                Loop::run(function () use ($msg) {
-                    $this->logger->critical($msg);
-                    yield from $this->stop();
-                });
+                if (!$err = \error_get_last()) {
+                    return;
+                }
+
+                switch ($err["type"]) {
+                    case E_ERROR:
+                    case E_PARSE:
+                    case E_USER_ERROR:
+                    case E_CORE_ERROR:
+                    case E_CORE_WARNING:
+                    case E_COMPILE_ERROR:
+                    case E_COMPILE_WARNING:
+                    case E_RECOVERABLE_ERROR:
+                        break;
+                    default:
+                        return;
+                }
+
+                $this->exitCode = 1;
+                $msg = "{$err["message"]} in {$err["file"]} on line {$err["line"]}";
+
+                $previous = Loop::get();
+
+                try {
+                    Loop::set((new Loop\DriverFactory)->create());
+                    Loop::run(function () use ($msg) {
+                        $this->logger->critical($msg);
+                        yield from $this->stop();
+                    });
+                } finally {
+                    Loop::set($previous);
+                }
             } finally {
-                Loop::set($previous);
+                $this->exit();
             }
         });
     }
