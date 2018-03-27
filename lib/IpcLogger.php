@@ -50,7 +50,9 @@ class IpcLogger extends Logger {
             $this->writeQueue = [];
         }
 
-        $bytes = @fwrite($this->ipcSock, $this->writeBuffer);
+        $eh = set_error_handler([$this, 'onDeadIpcSock']);
+        $bytes = fwrite($this->ipcSock, $this->writeBuffer);
+        set_error_handler($eh);
         if ($bytes === false) {
             $this->onDeadIpcSock();
             return;
