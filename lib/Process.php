@@ -73,6 +73,7 @@ abstract class Process {
             }
             $this->state = self::STOPPING;
             yield from $this->doStop();
+            Loop::stop();
         } catch (\Throwable $uncaught) {
             $this->exitCode = 1;
             $this->logger->critical($uncaught);
@@ -119,19 +120,8 @@ abstract class Process {
                 }
 
                 $this->exitCode = 1;
-                $msg = "{$err["message"]} in {$err["file"]} on line {$err["line"]}";
 
-                $previous = Loop::get();
-
-                try {
-                    Loop::set((new Loop\DriverFactory)->create());
-                    Loop::run(function () use ($msg) {
-                        $this->logger->critical($msg);
-                        yield from $this->stop();
-                    });
-                } finally {
-                    Loop::set($previous);
-                }
+                $this->logger->critical("{$err["message"]} in {$err["file"]} on line {$err["line"]}");
             } finally {
                 $this->exit();
             }
