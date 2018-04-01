@@ -62,9 +62,11 @@ class WorkerProcess extends Process {
         }
         $this->server = $server;
         Loop::unreference(Loop::onReadable($this->ipcSock, function ($watcherId) {
+            $this->logger->info("Received stop command");
             Loop::cancel($watcherId);
             yield from $this->stop();
         }));
+        yield (new CommandClient($console->getArg("config")))->started();
     }
 
     protected function doStop(): \Generator {

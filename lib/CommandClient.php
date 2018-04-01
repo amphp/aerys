@@ -98,6 +98,10 @@ class CommandClient {
         return $this->send(["action" => "stop"]);
     }
 
+    public function started(): Promise {
+        return $this->send(["action" => "started"]);
+    }
+
     public function importServerSockets($addrCtxMap): Promise {
         return call(function () use ($addrCtxMap) {
             $reply = yield $this->send(["action" => "import-sockets", "addrCtxMap" => array_map(function ($context) { return $context["socket"]; }, $addrCtxMap)]);
