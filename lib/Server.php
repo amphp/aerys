@@ -417,6 +417,12 @@ class Server implements Monitor {
         assert($this->logDebug("stopping"));
         $this->state = self::STOPPING;
 
+        // Unbind server sockets, otherwise connections are still sent to bound sockets but never accepted
+        // In restart situation that can lead to unnecessary request errors
+        foreach ($this->boundServers as $server) {
+            fclose($server);
+        }
+
         foreach ($this->acceptWatcherIds as $watcherId) {
             Loop::cancel($watcherId);
         }

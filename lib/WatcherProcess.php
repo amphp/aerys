@@ -207,6 +207,13 @@ class WatcherProcess extends Process {
                     case "import-sockets":
                         yield from $this->parseWorkerAddrCtx($client, $message["addrCtxMap"]);
                         break;
+
+                    case "started":
+                        $this->logger->info("Worker started");
+                        yield $this->replyCommand($client, []);
+                        assert(!empty($this->spawnDeferreds));
+                        array_shift($this->spawnDeferreds)->resolve();
+                        break;
                 }
             }
         }
@@ -396,9 +403,6 @@ class WatcherProcess extends Process {
 
             $this->ipcClients[\spl_object_hash($client)] = $client;
 
-            assert(!empty($this->spawnDeferreds));
-            array_shift($this->spawnDeferreds)->resolve();
-
             Promise\rethrow(new Coroutine($this->read($client)));
         }
     }
@@ -496,6 +500,7 @@ class WatcherProcess extends Process {
         for ($i = 0; $i < $this->workerCount; $i++) {
             $spawnPromise = $this->spawn();
             $spawnPromise->onResolve(function () {
+                $this->logger->info("Spawned new worker, stop old worker");
                 $client = current($this->ipcClients);
                 next($this->ipcClients);
                 $client->end(self::STOP_SEQUENCE);
