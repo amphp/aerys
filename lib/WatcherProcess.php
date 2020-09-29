@@ -200,7 +200,7 @@ class WatcherProcess extends Process {
                         try {
                             yield $this->replyCommand($client, []);
                         } finally {
-                            (new Coroutine($this->stop()))->onResolve([Loop::class, "stop"]);
+                            (new Coroutine($this->stop()));
                         };
                         return;
 
