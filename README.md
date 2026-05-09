@@ -1,14 +1,13 @@
 # aerys
 
-[![Build Status](https://travis-ci.org/amphp/aerys.svg?branch=master)](https://travis-ci.org/amphp/aerys)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/amphp/aerys/blob/master/LICENSE)
 
-Aerys is a non-blocking HTTP/1.1 and HTTP/2 application, WebSocket and static file server written in PHP based on [Amp](https://github.com/amphp/amp).
+Aerys is a no longer maintained non-blocking HTTP/1.1 and HTTP/2 application, WebSocket and static file server written in PHP based on [Amp](https://github.com/amphp/amp).
 
 ## Deprecation
 
 This repository is deprecated in favor of [`amphp/http-server`](https://github.com/amphp/http-server).
-It still exists to keep the documentation and also Packagist working as before.
+It still exists to keep Packagist working as before.
 
 ## Installation
 
@@ -18,9 +17,8 @@ composer require amphp/aerys
 
 ## Documentation
 
-- [Official Documentation](http://amphp.org/aerys/)
-- [Getting Started with Aerys](http://blog.kelunik.com/2015/10/21/getting-started-with-aerys.html)
-- [Getting Started with Aerys WebSockets](http://blog.kelunik.com/2015/10/20/getting-started-with-aerys-websockets.html)
+- [Getting Started with Aerys](https://blog.kelunik.com/2015/10/21/getting-started-with-aerys.html)
+- [Getting Started with Aerys WebSockets](https://blog.kelunik.com/2015/10/20/getting-started-with-aerys-websockets.html)
 
 ## Running a Server
 
@@ -59,7 +57,7 @@ return (new Aerys\Host)
 
 ## Security
 
-If you discover any security related issues, please email `bobwei9@hotmail.com` or `me@kelunik.com` instead of using the issue tracker.
+This repository is no longer maintained. Please upgrade to `amphp/http-server` instead.
 
 ## License
 
